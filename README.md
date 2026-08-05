@@ -1,36 +1,63 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Vusi Kunene Matlou — Portfolio
 
-## Getting Started
+Personal developer portfolio, built from scratch and deployed to
+[vusikunenematlou.co.za](https://vusikunenematlou.co.za). See
+[`PRODUCT_BRIEF.md`](./PRODUCT_BRIEF.md) for the epic goal and
+[`BACKLOG.md`](./BACKLOG.md) for the sprint plan and ticket status.
 
-First, run the development server:
+## Stack
+
+Next.js (App Router) + TypeScript + Tailwind CSS, tested with Jest/React
+Testing Library (unit) and Playwright (E2E), deployed on Vercel. Full
+rationale in the project's sprint-0 discussion — see `DESIGN.md` for the
+visual design tokens.
+
+## Getting started
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+npm install
+npm run dev       # http://localhost:3000
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Testing
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```bash
+npm run lint          # ESLint
+npm run format:check  # Prettier check
+npm run typecheck     # tsc --noEmit
+npm test               # Jest + React Testing Library
+npm run test:e2e       # Playwright, against a production build
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+All five checks run in CI (`.github/workflows/ci.yml`) on every pull request
+into `main`; a PR cannot merge unless they pass.
 
-## Learn More
+## Deployment
 
-To learn more about Next.js, take a look at the following resources:
+- **Hosting:** Vercel, connected to this GitHub repo. Pushing to `main`
+  deploys to production; every PR gets its own preview URL.
+- **Domain:** `vusikunenematlou.co.za`, purchased via GoDaddy. DNS points at
+  Vercel via an `A` record (apex) and `CNAME` (`www`), configured in the
+  Vercel project's Domains settings.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+```mermaid
+flowchart LR
+    Dev[Local dev] -->|git push| PR[Pull Request]
+    PR -->|GitHub Actions| CI[lint / typecheck / test / e2e / build]
+    CI -->|checks pass| Merge[Merge to main]
+    PR -.->|auto| Preview[Vercel Preview Deploy]
+    Merge -->|Vercel GitHub integration| Prod[Vercel Production Deploy]
+    Prod --> DNS[GoDaddy DNS: A + CNAME]
+    DNS --> Domain[vusikunenematlou.co.za]
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Repo structure
 
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+```
+src/app/        Next.js App Router pages, layouts, and colocated unit tests
+e2e/            Playwright end-to-end specs
+.github/workflows/ci.yml   CI pipeline
+BACKLOG.md      Sprint plan and ticket tracking (source of truth instead of Jira)
+PRODUCT_BRIEF.md  One-page epic description
+DESIGN.md       Design tokens (color, type, spacing)
+```
