@@ -19,6 +19,23 @@ npm install
 npm run dev       # http://localhost:3000
 ```
 
+### Contact form
+
+The contact section posts to `/api/contact`, which sends email via
+[Resend](https://resend.com). Set these locally in `.env.local` (never commit
+this file) and in the Vercel project's Environment Variables for production:
+
+```bash
+RESEND_API_KEY=      # required — from resend.com/api-keys
+CONTACT_TO_EMAIL=     # optional, defaults to the email in src/data/resume.ts
+CONTACT_FROM_EMAIL=   # optional, defaults to onboarding@resend.dev (Resend's
+                       # sandbox sender — verify vusikunenematlou.co.za in
+                       # Resend to send from a real address instead)
+```
+
+Without `RESEND_API_KEY` set, the form still validates input but returns a
+503 instead of sending — it fails loudly rather than silently.
+
 ## Testing
 
 ```bash

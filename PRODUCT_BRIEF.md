@@ -15,6 +15,7 @@ at BMW Group South Africa and TMS Dynamics, or the finished projects
 (Dermaglare, API Security Scanner, UBUNTU Verse).
 
 **Success looks like:**
+
 - `vusikunenematlou.co.za` resolves to the new site in production.
 - Content is 100% sourced from the resume — no invented experience.
 - CI blocks any merge to `main` that fails lint, typecheck, unit tests, or
