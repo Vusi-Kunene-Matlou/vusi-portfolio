@@ -12,6 +12,8 @@ export const profile = {
   github: 'https://github.com/vusi-kunene-matlou',
   linkedin: 'https://linkedin.com/in/vusi-matlou',
   domain: 'vusikunenematlou.co.za',
+  resumeUrl:
+    'https://drive.google.com/file/d/1vcWA2SUFtgoZGri2zoNHyubM9Bmkm95S/view?usp=sharing',
 } as const
 
 export type ExperienceEntry = {
