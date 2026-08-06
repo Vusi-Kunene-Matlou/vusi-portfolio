@@ -13,7 +13,7 @@ export const profile = {
   linkedin: 'https://linkedin.com/in/vusi-matlou',
   domain: 'vusikunenematlou.co.za',
   resumeUrl:
-    'https://drive.google.com/file/d/1d487F9MMl2qRyIiZ9Aaw7NkFXFtkft5U/view?usp=sharing',
+    'https://drive.google.com/file/d/1tnAuyvT2eSZ4LXOKtlMPSWtC4sTD1BkX/view?usp=sharing',
 } as const
 
 export type ExperienceEntry = {
