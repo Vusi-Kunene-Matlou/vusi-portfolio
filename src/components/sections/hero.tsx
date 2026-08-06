@@ -1,31 +1,53 @@
+import Image from 'next/image'
 import Link from 'next/link'
 import { profile } from '@/data/resume'
 
 export function Hero() {
   return (
     <section id="top" className="mx-auto max-w-5xl px-6 pt-20 pb-24 sm:pt-28 sm:pb-32">
-      <p className="font-mono text-sm text-accent">Hi, I&apos;m</p>
-      <h1 className="mt-3 text-4xl font-semibold tracking-tight text-foreground sm:text-5xl">
-        {profile.name}
-      </h1>
-      <p className="mt-4 max-w-2xl text-xl leading-snug text-muted sm:text-2xl">
-        {profile.title}
-      </p>
-      <p className="mt-6 max-w-2xl leading-relaxed text-muted">{profile.summary}</p>
+      <div className="grid items-center gap-12 lg:grid-cols-[1.1fr_0.9fr] lg:gap-8">
+        <div>
+          <p className="font-mono text-sm text-accent">Hi, I&apos;m</p>
+          <h1 className="mt-3 text-4xl font-semibold tracking-tight text-foreground sm:text-5xl">
+            {profile.name}
+          </h1>
+          <p className="mt-4 max-w-2xl text-xl leading-snug text-muted sm:text-2xl">
+            {profile.title}
+          </p>
+          <p className="mt-6 max-w-2xl leading-relaxed text-muted">{profile.summary}</p>
 
-      <div className="mt-10 flex flex-wrap gap-4">
-        <Link
-          href="#projects"
-          className="rounded-lg bg-accent px-5 py-2.5 text-sm font-medium text-white transition-opacity hover:opacity-90 dark:text-black"
-        >
-          View my work
-        </Link>
-        <Link
-          href="#contact"
-          className="rounded-lg border border-border px-5 py-2.5 text-sm font-medium text-foreground transition-colors hover:border-accent hover:text-accent"
-        >
-          Get in touch
-        </Link>
+          <div className="mt-10 flex flex-wrap gap-4">
+            <Link
+              href="#projects"
+              className="rounded-lg bg-accent px-5 py-2.5 text-sm font-medium text-white transition-opacity hover:opacity-90 dark:text-black"
+            >
+              View my work
+            </Link>
+            <Link
+              href="#contact"
+              className="rounded-lg border border-border px-5 py-2.5 text-sm font-medium text-foreground transition-colors hover:border-accent hover:text-accent"
+            >
+              Get in touch
+            </Link>
+          </div>
+        </div>
+
+        <div className="order-first mx-auto w-48 sm:w-64 lg:order-none lg:w-full">
+          <div className="relative aspect-[433/576]">
+            <div
+              aria-hidden="true"
+              className="absolute inset-6 rounded-full bg-accent/15 blur-2xl"
+            />
+            <Image
+              src="/profile.png"
+              alt={profile.name}
+              fill
+              priority
+              sizes="(min-width: 1024px) 320px, 220px"
+              className="relative object-contain"
+            />
+          </div>
+        </div>
       </div>
     </section>
   )
