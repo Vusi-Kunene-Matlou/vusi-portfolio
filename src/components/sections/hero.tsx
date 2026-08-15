@@ -68,7 +68,7 @@ export function Hero() {
           delay={150}
           className="reveal-scale order-first mx-auto w-48 sm:w-64 lg:order-none lg:w-full"
         >
-          <div className="relative aspect-[433/576]">
+          <div className="relative aspect-[406/614]">
             <div
               aria-hidden="true"
               className="absolute inset-6 rounded-full bg-accent/15 blur-2xl"
@@ -80,6 +80,10 @@ export function Hero() {
               priority
               sizes="(min-width: 1024px) 320px, 220px"
               className="relative object-contain"
+              style={{
+                maskImage: 'linear-gradient(to bottom, black 72%, transparent 96%)',
+                WebkitMaskImage: 'linear-gradient(to bottom, black 72%, transparent 96%)',
+              }}
             />
           </div>
         </Reveal>
