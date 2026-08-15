@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, type FormEvent } from 'react'
+import { Reveal } from '@/components/reveal'
 import { SectionHeading } from '@/components/section-heading'
 import { profile } from '@/data/resume'
 
@@ -44,7 +45,7 @@ export function Contact() {
       <SectionHeading eyebrow="06. Contact" title="Get in touch" />
 
       <div className="grid gap-10 md:grid-cols-2">
-        <div>
+        <Reveal>
           <p className="max-w-md leading-relaxed text-muted">
             I&apos;m open to opportunities in software development, QA, and cybersecurity.
             The fastest way to reach me is by email, or send a message directly below.
@@ -78,78 +79,94 @@ export function Contact() {
               </dd>
             </div>
           </dl>
-        </div>
+        </Reveal>
 
-        <form onSubmit={handleSubmit} className="space-y-4" noValidate>
-          <div className="hidden">
-            <label htmlFor="company">Company</label>
-            <input
-              type="text"
-              id="company"
-              name="company"
-              tabIndex={-1}
-              autoComplete="off"
-            />
-          </div>
+        <Reveal delay={150} className="reveal-slide-right">
+          <form onSubmit={handleSubmit} className="space-y-4" noValidate>
+            <div className="hidden">
+              <label htmlFor="company">Company</label>
+              <input
+                type="text"
+                id="company"
+                name="company"
+                tabIndex={-1}
+                autoComplete="off"
+              />
+            </div>
 
-          <div>
-            <label htmlFor="name" className="text-sm font-medium text-foreground">
-              Name
-            </label>
-            <input
-              id="name"
-              name="name"
-              type="text"
-              required
-              className="mt-1.5 w-full rounded-lg border border-border bg-surface px-3 py-2 text-sm text-foreground outline-none focus:border-accent"
-            />
-          </div>
+            <div>
+              <label htmlFor="name" className="text-sm font-medium text-foreground">
+                Name
+              </label>
+              <input
+                id="name"
+                name="name"
+                type="text"
+                required
+                className="mt-1.5 w-full rounded-lg border border-muted bg-surface px-3 py-2 text-sm text-foreground outline-none focus:border-accent"
+              />
+            </div>
 
-          <div>
-            <label htmlFor="email" className="text-sm font-medium text-foreground">
-              Email
-            </label>
-            <input
-              id="email"
-              name="email"
-              type="email"
-              required
-              className="mt-1.5 w-full rounded-lg border border-border bg-surface px-3 py-2 text-sm text-foreground outline-none focus:border-accent"
-            />
-          </div>
+            <div>
+              <label htmlFor="email" className="text-sm font-medium text-foreground">
+                Email
+              </label>
+              <input
+                id="email"
+                name="email"
+                type="email"
+                required
+                className="mt-1.5 w-full rounded-lg border border-muted bg-surface px-3 py-2 text-sm text-foreground outline-none focus:border-accent"
+              />
+            </div>
 
-          <div>
-            <label htmlFor="message" className="text-sm font-medium text-foreground">
-              Message
-            </label>
-            <textarea
-              id="message"
-              name="message"
-              rows={5}
-              required
-              className="mt-1.5 w-full rounded-lg border border-border bg-surface px-3 py-2 text-sm text-foreground outline-none focus:border-accent"
-            />
-          </div>
+            <div>
+              <label htmlFor="message" className="text-sm font-medium text-foreground">
+                Message
+              </label>
+              <textarea
+                id="message"
+                name="message"
+                rows={5}
+                required
+                className="mt-1.5 w-full rounded-lg border border-muted bg-surface px-3 py-2 text-sm text-foreground outline-none focus:border-accent"
+              />
+            </div>
 
-          <button
-            type="submit"
-            disabled={status === 'submitting'}
-            className="rounded-lg bg-accent px-5 py-2.5 text-sm font-medium text-white transition-opacity hover:opacity-90 disabled:opacity-50 dark:text-black"
-          >
-            {status === 'submitting' ? 'Sending…' : 'Send message'}
-          </button>
+            <button
+              type="submit"
+              disabled={status === 'submitting'}
+              className="rounded-lg bg-accent px-5 py-2.5 text-sm font-medium text-white transition-colors hover:bg-accent-hover disabled:opacity-50 dark:text-black"
+            >
+              {status === 'submitting' ? 'Sending…' : 'Send message'}
+            </button>
 
-          {status === 'success' && (
-            <p role="status" className="text-sm text-accent">
-              Thanks — your message has been sent. I&apos;ll get back to you soon.
-            </p>
-          )}
-          {status === 'error' && (
-            <p role="alert" className="text-sm text-red-600 dark:text-red-400">
-              {errorMessage}
-            </p>
-          )}
-        </form>
+            {status === 'success' && (
+              <p
+                role="status"
+                className="success-check flex items-center gap-2 text-sm text-accent"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth={2}
+                  className="h-4 w-4 shrink-0"
+                  aria-hidden="true"
+                >
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+                </svg>
+                Thanks — your message has been sent. I&apos;ll get back to you soon.
+              </p>
+            )}
+            {status === 'error' && (
+              <p role="alert" className="text-sm text-red-600 dark:text-red-400">
+                {errorMessage}
+              </p>
+            )}
+          </form>
+        </Reveal>
       </div>
     </section>
   )

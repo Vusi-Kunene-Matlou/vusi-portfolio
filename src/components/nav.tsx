@@ -38,7 +38,7 @@ export function Nav() {
             onClick={() => setOpen((v) => !v)}
             aria-label={open ? 'Close menu' : 'Open menu'}
             aria-expanded={open}
-            className="flex h-9 w-9 items-center justify-center rounded-lg border border-border text-foreground"
+            className="flex h-9 w-9 items-center justify-center rounded-lg border border-muted text-foreground"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"

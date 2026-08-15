@@ -52,6 +52,29 @@ vusikunenematlou.co.za via Vercel, with a real backlog, CI/CD, and automated tes
 | PORT-27 | Decommission old GitHub Pages site | Archive/retire the old template repo and its GitHub Pages deployment        | Old `Vusi-Kunene-Matlou.github.io` no longer serves as the primary portfolio          | 1      | Todo   |
 | PORT-28 | README finalized                   | Run/test/deploy instructions accurate and complete                          | A new contributor can clone, run, test, and understand deploy from README alone       | 1      | Todo   |
 
+## Sprint 2b: Cinematic Polish Pass
+
+**Goal:** Take the site from "functional but plain" to deliberately designed, per a
+motion/layout audit — built locally, self-tested, held for review before pushing.
+
+| ID      | Title                                          | Description                                                                                                                   | Acceptance Criteria                                                                                   | Points | Status |
+| ------- | ---------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------- | ------ | ------ |
+| PORT-29 | Fix pure-black canvas + add accent-hover token | Dark-mode background was `#000000`; add a tinted near-black and a proper button hover color                                   | `DESIGN.md` and `globals.css` no longer reference pure `#000`; hover states use `accent-hover`        | 1      | Done   |
+| PORT-30 | Scroll-entrance reveal system                  | `Reveal` component + `useInView` hook; opacity/translate only, staggered per section                                          | Every section's content fades/rises in on scroll; proven via automated before/after opacity check     | 3      | Done   |
+| PORT-31 | Reshape Skills layout                          | Break the Projects → Skills → Volunteer repeated card-grid skeleton                                                           | Skills renders as a divider-based list, not a bordered card grid; adjacent sections all differ        | 2      | Done   |
+| PORT-32 | Experience timeline signature element          | Vertical accent rail that draws in on scroll alongside the Experience list                                                    | Rail animates once on scroll-into-view; shows fully drawn immediately under reduced motion            | 2      | Done   |
+| PORT-33 | Accessibility quality-floor pass               | Skip-to-content link, `#main` landmark, fix interactive-control border contrast                                               | Skip link works via keyboard; measured contrast ≥ 3:1 on all interactive borders (verified 7.4–7.7:1) | 2      | Done   |
+| PORT-34 | Reduced-motion + adversarial self-test         | Full checklist: console errors, sideways scroll, contrast, reduced motion (initial + live toggle), contact form failure state | All checks pass with real measurements, not assumptions (see verification notes below)                | 2      | Done   |
+
+**Verification notes (PORT-34):** Console errors: zero across light/dark ×
+desktop/mobile. Sideways scroll: none at any combination. Interactive border
+contrast: 7.40:1 (light), 7.67:1 (dark) — measured via canvas-normalized RGB,
+not eyeballed. Reduced motion: elements show final state immediately on load,
+and respond live to a mid-session OS toggle with no reload. Contact form: the
+real 503 "not configured" failure path (no `RESEND_API_KEY` locally) renders
+correctly in an accessible alert region. Not yet pushed to `main` — held
+locally for review per explicit instruction.
+
 ## Post-launch backlog (not scheduled)
 
 - Blog/case-studies section backed by MDX or a headless CMS
