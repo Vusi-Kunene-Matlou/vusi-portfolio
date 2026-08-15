@@ -36,22 +36,25 @@ CONTACT_FROM_EMAIL=   # optional, defaults to onboarding@resend.dev (Resend's
 Without `RESEND_API_KEY` set, the form still validates input but returns a
 503 instead of sending — it fails loudly rather than silently.
 
-### GitHub activity graph
+### GitHub activity
 
-The "GitHub activity" section fetches the live contribution calendar from
-GitHub's GraphQL API server-side, via `/api/github-contributions`. GitHub's
-GraphQL API requires authentication even for public data, so this needs a
-token:
+The "Coding activity" section fetches live data from GitHub server-side via
+`/api/github-contributions`: the contribution calendar (GraphQL), current
+streak (computed from the calendar), pull request and code review counts
+with a month-over-month trend (two GraphQL date ranges in one query), and a
+recent-activity feed (REST `/users/{login}/events/public`). GitHub's GraphQL
+API requires authentication even for public data, so this needs a token:
 
 ```bash
 GITHUB_TOKEN=   # required — a classic PAT with no scopes selected is enough,
-                 # since this only reads public contribution data
+                 # since this only reads public data
 ```
 
 The route is `force-dynamic` (no caching) and the widget fetches on mount, so
-the graph reflects real GitHub data on every page load rather than a
-build-time snapshot. Without `GITHUB_TOKEN` set, the section shows "GitHub
-activity is not configured yet." instead of a broken widget.
+it reflects real GitHub data on every page load rather than a build-time
+snapshot. Without `GITHUB_TOKEN` set, the section shows "GitHub activity is
+not configured yet." instead of a broken widget. The recent-activity feed
+only shows public events — private repo activity won't appear there.
 
 ## Testing
 
