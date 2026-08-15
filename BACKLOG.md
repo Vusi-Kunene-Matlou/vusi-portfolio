@@ -72,8 +72,16 @@ contrast: 7.40:1 (light), 7.67:1 (dark) — measured via canvas-normalized RGB,
 not eyeballed. Reduced motion: elements show final state immediately on load,
 and respond live to a mid-session OS toggle with no reload. Contact form: the
 real 503 "not configured" failure path (no `RESEND_API_KEY` locally) renders
-correctly in an accessible alert region. Not yet pushed to `main` — held
-locally for review per explicit instruction.
+correctly in an accessible alert region. Pushed to `main` in commit `06b240b`.
+
+## Sprint 2c: Contact Icons & GitHub Activity
+
+**Goal:** Add social icons to the contact links and a live GitHub contribution graph.
+
+| ID      | Title                          | Description                                                                                                                                  | Acceptance Criteria                                                                                                                                                                       | Points | Status                                                                   |
+| ------- | ------------------------------ | -------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------ | ------------------------------------------------------------------------ |
+| PORT-35 | Contact section icons          | Mail/GitHub/LinkedIn inline SVG icons next to each contact link                                                                              | Icons render in accent color, all three links remain keyboard-accessible with visible text                                                                                                | 1      | Done                                                                     |
+| PORT-36 | Live GitHub contribution graph | New "Activity" section; server-side GitHub GraphQL fetch via `/api/github-contributions`, rendered as a heatmap in the site's accent palette | Widget shows real contribution data when `GITHUB_TOKEN` is set; graceful "not configured" message otherwise; zero layout overflow on mobile; verified via mocked-response screenshot test | 3      | Done (needs `GITHUB_TOKEN` set in Vercel to show real data — see README) |
 
 ## Post-launch backlog (not scheduled)
 
