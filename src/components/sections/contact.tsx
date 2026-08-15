@@ -3,7 +3,12 @@
 import { useState, type FormEvent } from 'react'
 import { Reveal } from '@/components/reveal'
 import { SectionHeading } from '@/components/section-heading'
-import { GithubIcon, LinkedinIcon, MailIcon } from '@/components/social-icons'
+import {
+  GithubIcon,
+  LinkedinIcon,
+  MailIcon,
+  WhatsappIcon,
+} from '@/components/social-icons'
 import { profile } from '@/data/resume'
 
 type Status = 'idle' | 'submitting' | 'success' | 'error'
@@ -81,6 +86,17 @@ export function Contact() {
               >
                 <LinkedinIcon className="h-4.5 w-4.5 shrink-0 text-accent" />
                 {profile.linkedin.replace('https://', '')}
+              </a>
+            </li>
+            <li>
+              <a
+                href={profile.whatsapp}
+                target="_blank"
+                rel="noreferrer"
+                className="inline-flex items-center gap-2.5 text-foreground transition-colors hover:text-accent"
+              >
+                <WhatsappIcon className="h-4.5 w-4.5 shrink-0 text-accent" />
+                Message on WhatsApp
               </a>
             </li>
           </ul>
