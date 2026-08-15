@@ -10,6 +10,7 @@ export const profile = {
   phone: '068-596-6897',
   email: 'matlouvusikunene544@gmail.com',
   github: 'https://github.com/vusi-kunene-matlou',
+  githubUsername: 'vusi-kunene-matlou',
   linkedin: 'https://linkedin.com/in/vusi-matlou',
   domain: 'vusikunenematlou.co.za',
   resumeUrl:
@@ -247,5 +248,6 @@ export const navSections = [
   { id: 'projects', label: 'Projects' },
   { id: 'skills', label: 'Skills' },
   { id: 'volunteer', label: 'Leadership' },
+  { id: 'activity', label: 'Activity' },
   { id: 'contact', label: 'Contact' },
 ] as const

@@ -72,7 +72,9 @@ No two adjacent sections share the same layout skeleton: Hero (photo +
 text), About (2-col prose/card), Experience (timeline list), Projects (2-col
 card grid), Skills (single-column divider list, not boxed cards — the
 deliberate break from the card-grid pattern either side of it), Volunteer
-(3-col card grid), Contact (2-col info/form).
+(3-col card grid), Activity (single live data widget — the GitHub
+contribution heatmap, in the site's accent palette rather than GitHub's own
+green), Contact (2-col info/form).
 
 ## Notes
 

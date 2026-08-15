@@ -3,6 +3,7 @@
 import { useState, type FormEvent } from 'react'
 import { Reveal } from '@/components/reveal'
 import { SectionHeading } from '@/components/section-heading'
+import { GithubIcon, LinkedinIcon, MailIcon } from '@/components/social-icons'
 import { profile } from '@/data/resume'
 
 type Status = 'idle' | 'submitting' | 'success' | 'error'
@@ -42,7 +43,7 @@ export function Contact() {
 
   return (
     <section id="contact" className="mx-auto max-w-5xl px-6 py-24">
-      <SectionHeading eyebrow="06. Contact" title="Get in touch" />
+      <SectionHeading eyebrow="07. Contact" title="Get in touch" />
 
       <div className="grid gap-10 md:grid-cols-2">
         <Reveal>
@@ -50,35 +51,39 @@ export function Contact() {
             I&apos;m open to opportunities in software development, QA, and cybersecurity.
             The fastest way to reach me is by email, or send a message directly below.
           </p>
-          <dl className="mt-6 space-y-2 text-sm">
-            <div className="flex gap-2">
-              <dt className="text-muted">Email</dt>
-              <dd>
-                <a
-                  href={`mailto:${profile.email}`}
-                  className="text-accent hover:underline"
-                >
-                  {profile.email}
-                </a>
-              </dd>
-            </div>
-            <div className="flex gap-2">
-              <dt className="text-muted">GitHub</dt>
-              <dd>
-                <a href={profile.github} className="text-accent hover:underline">
-                  {profile.github.replace('https://', '')}
-                </a>
-              </dd>
-            </div>
-            <div className="flex gap-2">
-              <dt className="text-muted">LinkedIn</dt>
-              <dd>
-                <a href={profile.linkedin} className="text-accent hover:underline">
-                  {profile.linkedin.replace('https://', '')}
-                </a>
-              </dd>
-            </div>
-          </dl>
+          <ul className="mt-6 space-y-3 text-sm">
+            <li>
+              <a
+                href={`mailto:${profile.email}`}
+                className="inline-flex items-center gap-2.5 text-foreground transition-colors hover:text-accent"
+              >
+                <MailIcon className="h-4.5 w-4.5 shrink-0 text-accent" />
+                {profile.email}
+              </a>
+            </li>
+            <li>
+              <a
+                href={profile.github}
+                target="_blank"
+                rel="noreferrer"
+                className="inline-flex items-center gap-2.5 text-foreground transition-colors hover:text-accent"
+              >
+                <GithubIcon className="h-4.5 w-4.5 shrink-0 text-accent" />
+                {profile.github.replace('https://', '')}
+              </a>
+            </li>
+            <li>
+              <a
+                href={profile.linkedin}
+                target="_blank"
+                rel="noreferrer"
+                className="inline-flex items-center gap-2.5 text-foreground transition-colors hover:text-accent"
+              >
+                <LinkedinIcon className="h-4.5 w-4.5 shrink-0 text-accent" />
+                {profile.linkedin.replace('https://', '')}
+              </a>
+            </li>
+          </ul>
         </Reveal>
 
         <Reveal delay={150} className="reveal-slide-right">
