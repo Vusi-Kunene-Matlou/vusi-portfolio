@@ -12,6 +12,7 @@ export const profile = {
   github: 'https://github.com/vusi-kunene-matlou',
   githubUsername: 'vusi-kunene-matlou',
   linkedin: 'https://linkedin.com/in/vusi-matlou',
+  whatsapp: 'https://wa.me/27751860003',
   domain: 'vusikunenematlou.co.za',
   resumeUrl:
     'https://drive.google.com/file/d/1tnAuyvT2eSZ4LXOKtlMPSWtC4sTD1BkX/view?usp=sharing',
