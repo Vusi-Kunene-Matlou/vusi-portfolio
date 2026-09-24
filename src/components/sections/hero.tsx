@@ -1,6 +1,6 @@
-import Image from 'next/image'
 import Link from 'next/link'
 import { Reveal } from '@/components/reveal'
+import { ProfileImageSlider } from '@/components/profile-image-slider'
 import { profile } from '@/data/resume'
 
 export function Hero() {
@@ -66,25 +66,14 @@ export function Hero() {
 
         <Reveal
           delay={150}
-          className="reveal-scale order-first mx-auto w-48 sm:w-64 lg:order-none lg:w-full"
+          className="reveal-scale order-first mx-auto w-48 sm:w-64 lg:order-none lg:w-full lg:max-w-sm"
         >
-          <div className="relative aspect-[406/614]">
+          <div className="relative aspect-[3/4]">
             <div
               aria-hidden="true"
-              className="absolute inset-6 rounded-full bg-accent/15 blur-2xl"
+              className="absolute -inset-4 rounded-[2rem] bg-accent/15 blur-2xl"
             />
-            <Image
-              src="/profile.png"
-              alt={profile.name}
-              fill
-              priority
-              sizes="(min-width: 1024px) 320px, 220px"
-              className="relative object-contain"
-              style={{
-                maskImage: 'linear-gradient(to bottom, black 72%, transparent 96%)',
-                WebkitMaskImage: 'linear-gradient(to bottom, black 72%, transparent 96%)',
-              }}
-            />
+            <ProfileImageSlider name={profile.name} />
           </div>
         </Reveal>
       </div>

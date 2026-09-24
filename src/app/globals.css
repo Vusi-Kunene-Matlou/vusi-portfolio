@@ -96,11 +96,52 @@ body {
   }
 }
 
+/*
+ * Hero portrait carousel. The incoming slide fades/slides in on top; the
+ * outgoing slide slides away but only fades once the incoming one is fully
+ * opaque, so the frame is never blank mid-transition. Uniform scale only —
+ * never a non-uniform squash — so faces are not distorted.
+ */
+.profile-slide {
+  object-position: center 22%;
+  will-change: opacity, transform;
+}
+
+.profile-slide[data-role='upcoming'] {
+  opacity: 0;
+  transform: translateX(48px) scale(1.04);
+  z-index: 0;
+}
+
+.profile-slide[data-role='current'] {
+  opacity: 1;
+  transform: none;
+  z-index: 20;
+  transition:
+    opacity 1.1s ease,
+    transform 1.3s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.profile-slide[data-role='prev'] {
+  opacity: 0;
+  transform: translateX(-40px) scale(0.98);
+  z-index: 10;
+  transition:
+    opacity 0.5s ease 1.1s,
+    transform 1.3s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
 @media (prefers-reduced-motion: reduce) {
   .reveal {
     opacity: 1 !important;
     transform: none !important;
     transition: none !important;
+  }
+
+  /* Minimal crossfade only: no sliding or scaling. */
+  .profile-slide {
+    transform: none !important;
+    transition: opacity 0.4s linear !important;
   }
 
   .timeline-rail {
