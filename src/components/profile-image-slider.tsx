@@ -23,6 +23,34 @@ const IMAGES: readonly { src: string; position?: string }[] = [
 const DISPLAY_MS = 4500
 const FIRST_PICK_DELAY_MS = 300
 
+// Remembers which photos this visitor has already seen in the current round,
+// so reloading the page doesn't repeat them until every photo has been shown.
+// Stored by src (not index) so adding or removing photos can't mismatch it.
+const SEEN_STORAGE_KEY = 'profile-carousel-seen'
+
+function loadSeen(): number[] {
+  try {
+    const stored: unknown = JSON.parse(localStorage.getItem(SEEN_STORAGE_KEY) ?? '[]')
+    if (!Array.isArray(stored)) return []
+    return stored
+      .map((src) => IMAGES.findIndex((image) => image.src === src))
+      .filter((index) => index >= 0)
+  } catch {
+    return []
+  }
+}
+
+function saveSeen(indices: number[]) {
+  try {
+    localStorage.setItem(
+      SEEN_STORAGE_KEY,
+      JSON.stringify(indices.map((index) => IMAGES[index].src))
+    )
+  } catch {
+    // Storage blocked (private mode etc.) — rotation still works, just not across reloads.
+  }
+}
+
 type Slides = { prev: number | null; current: number; upcoming: number | null }
 
 function roleOf(slides: Slides, index: number) {
@@ -33,7 +61,7 @@ function roleOf(slides: Slides, index: number) {
 
 export function ProfileImageSlider({ name }: { name: string }) {
   // Server and first client render both show IMAGES[0], so hydration matches;
-  // randomness only starts after mount.
+  // on mount it crossfades straight to a random photo this visitor hasn't seen.
   const [slides, setSlides] = useState<Slides>({ prev: null, current: 0, upcoming: null })
   const [hovered, setHovered] = useState(false)
   const [tabHidden, setTabHidden] = useState(false)
@@ -41,9 +69,23 @@ export function ProfileImageSlider({ name }: { name: string }) {
   const failedRef = useRef<Set<number>>(new Set())
 
   function pickNext() {
-    bagRef.current ??= createShuffleBag(IMAGES.length, { initial: 0 })
+    bagRef.current ??= createShuffleBag(IMAGES.length, { seen: loadSeen() })
     return bagRef.current.next(failedRef.current)
   }
+
+  const startedRef = useRef(false)
+  useEffect(() => {
+    if (startedRef.current) return
+    startedRef.current = true
+    const first = pickNext()
+    setSlides({ prev: first === 0 ? null : 0, current: first, upcoming: null })
+  }, [])
+
+  // Persist only photos actually shown — the preloading `upcoming` one isn't seen yet.
+  useEffect(() => {
+    if (!bagRef.current) return
+    saveSeen(bagRef.current.seen().filter((index) => index !== slides.upcoming))
+  }, [slides])
 
   useEffect(() => {
     const onVisibility = () => setTabHidden(document.hidden)

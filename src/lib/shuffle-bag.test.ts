@@ -33,4 +33,25 @@ describe('createShuffleBag', () => {
     }
     expect(orders.size).toBeGreaterThan(1)
   })
+
+  it('resumes a cycle from `seen`, only returning photos not yet shown', () => {
+    const bag = createShuffleBag(6, { seen: [4, 1, 5] })
+    const rest = Array.from({ length: 3 }, () => bag.next())
+    expect([...rest].sort()).toEqual([0, 2, 3])
+    expect(bag.seen()).toEqual([4, 1, 5, ...rest])
+  })
+
+  it('starts a new cycle after a fully-seen restore without repeating the last one', () => {
+    for (let run = 0; run < 50; run++) {
+      const bag = createShuffleBag(4, { seen: [0, 1, 2, 3] })
+      expect(bag.next()).not.toBe(3)
+      expect(bag.seen()).toHaveLength(1)
+    }
+  })
+
+  it('ignores out-of-range or duplicate entries in `seen`', () => {
+    const bag = createShuffleBag(3, { seen: [7, -1, 1, 1] })
+    const rest = [bag.next(), bag.next()]
+    expect([...rest].sort()).toEqual([0, 2])
+  })
 })
