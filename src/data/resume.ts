@@ -120,12 +120,42 @@ export const projects: ProjectEntry[] = [
     name: 'UBUNTU Verse',
     tagline: 'G20 Virtual Reality Tourism Platform',
     period: '2025',
-    stack: ['Unity/Unreal', 'WebXR', 'Node.js', 'Firebase'],
+    stack: ['Three.js', 'WebXR', 'Node.js', 'Firebase'],
     bullets: [
       "Developed an immersive VR platform showcasing South Africa's rural tourism destinations.",
       'Designed a content-monetization model empowering local youth in the digital economy.',
     ],
-    links: [],
+    links: [
+      { label: 'Live site', href: 'https://ubuntuverse.vusikunenematlou.co.za/' },
+      {
+        label: 'VR experience',
+        href: 'https://ubuntuverse.vusikunenematlou.co.za/experience',
+      },
+    ],
+  },
+  {
+    id: 'hacksecure-2026',
+    name: 'HackSecure 2026',
+    tagline: 'Cybersecurity hackathon platform with CyberM8',
+    period: '2026',
+    stack: ['Next.js', 'React', 'Vercel'],
+    bullets: [
+      'Built the official site for HackSecure 2026, from the Ideathon on 17 October to the final pitches at The Galleria on 28 October.',
+      'Showcased participant solutions including scam checkers, deepfake detectors, forensic tools, and SMME protection.',
+    ],
+    links: [{ label: 'Live site', href: 'https://hack-secure-psi.vercel.app/#top' }],
+  },
+  {
+    id: 'hacksecure-starter-pack',
+    name: 'HackSecure Cyber Starter Pack',
+    tagline: 'Free cybersecurity learning hub for hackathon participants',
+    period: '2026',
+    stack: ['Next.js', 'React', 'Vercel'],
+    bullets: [
+      'Curated free badge courses from Cisco, IBM SkillsBuild, Fortinet, and Microsoft Learn.',
+      'Linked hands-on labs and CTFs (TryHackMe, Hack The Box Academy, PortSwigger, picoCTF) with a year-long challenge: one badge a month, one lab a week.',
+    ],
+    links: [{ label: 'Starter Pack', href: 'https://hack-secure-psi.vercel.app/' }],
   },
 ]
 
