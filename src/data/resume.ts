@@ -145,18 +145,6 @@ export const projects: ProjectEntry[] = [
     ],
     links: [{ label: 'Live site', href: 'https://hack-secure-psi.vercel.app/#top' }],
   },
-  {
-    id: 'hacksecure-starter-pack',
-    name: 'HackSecure Cyber Starter Pack',
-    tagline: 'Free cybersecurity learning hub for hackathon participants',
-    period: '2026',
-    stack: ['Next.js', 'React', 'Vercel'],
-    bullets: [
-      'Curated free badge courses from Cisco, IBM SkillsBuild, Fortinet, and Microsoft Learn.',
-      'Linked hands-on labs and CTFs (TryHackMe, Hack The Box Academy, PortSwigger, picoCTF) with a year-long challenge: one badge a month, one lab a week.',
-    ],
-    links: [{ label: 'Starter Pack', href: 'https://hack-secure-psi.vercel.app/' }],
-  },
 ]
 
 export type SkillGroup = {
