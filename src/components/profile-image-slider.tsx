@@ -4,18 +4,21 @@ import Image from 'next/image'
 import { useEffect, useRef, useState } from 'react'
 import { createShuffleBag } from '@/lib/shuffle-bag'
 
-const IMAGES = [
-  '/profile1.jpeg',
-  '/profile2.jpg',
-  '/profile3.jpeg',
-  '/profile4.jpeg',
-  '/profile5.png',
-  '/profile6.png',
-  '/profile7.jpeg',
-  '/profile8.png',
-  '/profile9.jpg',
-  '/profile10.jpeg',
-] as const
+// `position` sets the CSS object-position for photos whose subject is
+// off-centre, so the cover crop keeps them in frame.
+const IMAGES: readonly { src: string; position?: string }[] = [
+  { src: '/profile1.jpeg' },
+  { src: '/profile2.jpg' },
+  { src: '/profile3.jpeg' },
+  { src: '/profile4.jpeg' },
+  { src: '/profile5.png' },
+  { src: '/profile7.jpeg' },
+  { src: '/profile9.jpg' },
+  { src: '/profile10.jpeg' },
+  { src: '/profile11.jpeg' },
+  { src: '/profile12.jpeg', position: 'right center' },
+  { src: '/profile13.jpeg' },
+]
 
 const DISPLAY_MS = 4500
 const FIRST_PICK_DELAY_MS = 300
@@ -88,8 +91,8 @@ export function ProfileImageSlider({ name }: { name: string }) {
         const role = roleOf(slides, index)
         return (
           <Image
-            key={IMAGES[index]}
-            src={IMAGES[index]}
+            key={IMAGES[index].src}
+            src={IMAGES[index].src}
             alt={role === 'current' ? `${name} — portrait` : ''}
             aria-hidden={role === 'current' ? undefined : true}
             fill
@@ -98,6 +101,7 @@ export function ProfileImageSlider({ name }: { name: string }) {
             sizes="(min-width: 1024px) 352px, 256px"
             data-role={role}
             onError={() => handleError(index)}
+            style={IMAGES[index].position ? { objectPosition: IMAGES[index].position } : undefined}
             className="profile-slide object-cover"
           />
         )

@@ -168,7 +168,15 @@ export async function GET() {
   ])
 
   if (!graphqlRes.ok) {
-    return Response.json({ error: 'Failed to fetch GitHub activity.' }, { status: 502 })
+    const detail = await graphqlRes.text().catch(() => '')
+    console.error(
+      `[github-contributions] GraphQL request failed: ${graphqlRes.status} ${detail.slice(0, 300)}`
+    )
+    const error =
+      graphqlRes.status === 401
+        ? 'GitHub token is invalid or expired.'
+        : 'Failed to fetch GitHub activity.'
+    return Response.json({ error }, { status: 502 })
   }
 
   const graphqlJson = await graphqlRes.json()
@@ -176,6 +184,10 @@ export async function GET() {
   const calendar = user?.contributionsCollection?.contributionCalendar
 
   if (!calendar) {
+    console.error(
+      '[github-contributions] No contribution calendar in response:',
+      JSON.stringify(graphqlJson?.errors ?? graphqlJson).slice(0, 300)
+    )
     return Response.json({ error: 'Failed to fetch GitHub activity.' }, { status: 502 })
   }
 
