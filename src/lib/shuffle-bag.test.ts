@@ -54,4 +54,16 @@ describe('createShuffleBag', () => {
     const rest = [bag.next(), bag.next()]
     expect([...rest].sort()).toEqual([0, 2])
   })
+
+  it('never picks either of the two most recent indices, including across cycles', () => {
+    for (const size of [4, 5, 11]) {
+      const bag = createShuffleBag(size, { initial: 0 })
+      const picks = [0]
+      for (let i = 0; i < 500; i++) {
+        const next = bag.next()
+        expect(picks.slice(-2)).not.toContain(next)
+        picks.push(next)
+      }
+    }
+  })
 })

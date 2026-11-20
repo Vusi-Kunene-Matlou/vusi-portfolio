@@ -1,7 +1,7 @@
 'use client'
 
 import Image from 'next/image'
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useRef, useState, type CSSProperties } from 'react'
 import { createShuffleBag } from '@/lib/shuffle-bag'
 
 // `position` sets the CSS object-position for photos whose subject is
@@ -51,7 +51,28 @@ function saveSeen(indices: number[]) {
   }
 }
 
-type Slides = { prev: number | null; current: number; upcoming: number | null }
+// Ken Burns moves: each photo slowly zooms and pans while it's on screen.
+// `scale()` comes first so the translate stays inside the zoomed overflow and
+// never reveals the frame's background. Uniform scale only — faces never squash.
+const KEN_BURNS = [
+  { from: 'scale(1) translate(0, 0)', to: 'scale(1.15) translate(0, -2%)' }, // slow push in
+  { from: 'scale(1.08) translate(3%, 0)', to: 'scale(1.18) translate(-3%, -1%)' }, // push in, drift left
+  { from: 'scale(1.18) translate(-2%, -2%)', to: 'scale(1.04) translate(1%, 0)' }, // pull out
+  { from: 'scale(1.12) translate(-4%, 0)', to: 'scale(1.14) translate(4%, -1%)' }, // pan right
+] as const
+
+function randomMove(avoid?: number) {
+  const options = KEN_BURNS.map((_, i) => i).filter((i) => i !== avoid)
+  return options[Math.floor(Math.random() * options.length)]
+}
+
+type Slides = {
+  prev: number | null
+  current: number
+  upcoming: number | null
+  /** Ken Burns preset per mounted photo index. */
+  moves: Record<number, number>
+}
 
 function roleOf(slides: Slides, index: number) {
   if (index === slides.current) return 'current'
@@ -62,7 +83,12 @@ function roleOf(slides: Slides, index: number) {
 export function ProfileImageSlider({ name }: { name: string }) {
   // Server and first client render both show IMAGES[0], so hydration matches;
   // on mount it crossfades straight to a random photo this visitor hasn't seen.
-  const [slides, setSlides] = useState<Slides>({ prev: null, current: 0, upcoming: null })
+  const [slides, setSlides] = useState<Slides>({
+    prev: null,
+    current: 0,
+    upcoming: null,
+    moves: { 0: 0 },
+  })
   const [hovered, setHovered] = useState(false)
   const [tabHidden, setTabHidden] = useState(false)
   const bagRef = useRef<ReturnType<typeof createShuffleBag> | null>(null)
@@ -78,7 +104,12 @@ export function ProfileImageSlider({ name }: { name: string }) {
     if (startedRef.current) return
     startedRef.current = true
     const first = pickNext()
-    setSlides({ prev: first === 0 ? null : 0, current: first, upcoming: null })
+    setSlides((s) => ({
+      prev: first === 0 ? null : 0,
+      current: first,
+      upcoming: null,
+      moves: { ...s.moves, [first]: randomMove(s.moves[0]) },
+    }))
   }, [])
 
   // Persist only photos actually shown — the preloading `upcoming` one isn't seen yet.
@@ -100,11 +131,21 @@ export function ProfileImageSlider({ name }: { name: string }) {
 
     const timer = setTimeout(
       () => {
+        const upcoming = pickNext()
         if (slides.upcoming === null) {
-          setSlides({ ...slides, upcoming: pickNext() })
+          setSlides({
+            ...slides,
+            upcoming,
+            moves: { ...slides.moves, [upcoming]: randomMove(slides.moves[slides.current]) },
+          })
         } else {
           const nextCurrent = slides.upcoming
-          setSlides({ prev: slides.current, current: nextCurrent, upcoming: pickNext() })
+          setSlides({
+            prev: slides.current,
+            current: nextCurrent,
+            upcoming,
+            moves: { ...slides.moves, [upcoming]: randomMove(slides.moves[nextCurrent]) },
+          })
         }
       },
       slides.upcoming === null ? FIRST_PICK_DELAY_MS : DISPLAY_MS
@@ -125,12 +166,15 @@ export function ProfileImageSlider({ name }: { name: string }) {
 
   return (
     <div
-      className="relative h-full w-full overflow-hidden rounded-lg border border-border bg-surface"
+      data-paused={paused || undefined}
+      className="profile-frame relative h-full w-full overflow-hidden rounded-lg border border-border bg-surface"
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
     >
       {mounted.map((index) => {
         const role = roleOf(slides, index)
+        const { position } = IMAGES[index]
+        const move = KEN_BURNS[slides.moves[index] ?? 0]
         return (
           <Image
             key={IMAGES[index].src}
@@ -143,7 +187,14 @@ export function ProfileImageSlider({ name }: { name: string }) {
             sizes="(min-width: 1024px) 352px, 256px"
             data-role={role}
             onError={() => handleError(index)}
-            style={IMAGES[index].position ? { objectPosition: IMAGES[index].position } : undefined}
+            style={
+              {
+                '--kb-from': move.from,
+                '--kb-to': move.to,
+                // Off-centre subjects zoom towards themselves, not the middle.
+                ...(position ? { objectPosition: position, transformOrigin: position } : {}),
+              } as CSSProperties
+            }
             className="profile-slide object-cover"
           />
         )

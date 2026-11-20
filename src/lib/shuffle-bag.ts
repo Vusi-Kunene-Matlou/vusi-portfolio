@@ -9,8 +9,9 @@ export function shuffle<T>(items: readonly T[], random: () => number = Math.rand
 
 /**
  * Random-but-fair index picker: every index is returned once per cycle before
- * any repeats, and the first pick of a new cycle never equals the last pick of
- * the previous one. `initial` is treated as already shown.
+ * any repeats, and a new cycle never starts with either of the previous cycle's
+ * last two picks (so a carousel never reuses the photo still fading out).
+ * `initial` is treated as already shown.
  *
  * `seen` resumes a cycle in progress (e.g. restored from storage across page
  * loads): those indices count as already shown, the last one as most recent.
@@ -31,7 +32,8 @@ export function createShuffleBag(
   for (const i of [...seen, ...(initial === undefined ? [] : [initial])]) {
     if (valid(i) && !cycle.includes(i)) cycle.push(i)
   }
-  let last = cycle.at(-1) ?? -1
+  // Most recent picks, newest last.
+  const recent: number[] = cycle.slice(-2)
   let bag = shuffle(
     all.filter((i) => !cycle.includes(i)),
     random
@@ -40,10 +42,18 @@ export function createShuffleBag(
   function refill() {
     cycle.length = 0
     bag = shuffle(all, random)
-    const top = bag.length - 1
-    if (size > 1 && bag[top] === last) {
-      ;[bag[top], bag[0]] = [bag[0], bag[top]]
-    }
+    // bag is popped from the end: the next pick must avoid the last two picks,
+    // the one after it must avoid the very last pick.
+    const rules = [recent.slice(-2), recent.slice(-1)]
+    rules.forEach((forbidden, depth) => {
+      const pos = bag.length - 1 - depth
+      if (pos < 0 || !forbidden.includes(bag[pos])) return
+      const swapWith = bag.findIndex(
+        (candidate, i) =>
+          i < pos - (rules.length - 1 - depth) && !forbidden.includes(candidate)
+      )
+      if (swapWith >= 0) [bag[pos], bag[swapWith]] = [bag[swapWith], bag[pos]]
+    })
   }
 
   return {
@@ -52,14 +62,15 @@ export function createShuffleBag(
         while (bag.length > 0) {
           const index = bag.pop()!
           if (!disabled.has(index)) {
-            last = index
+            recent.push(index)
+            if (recent.length > 2) recent.shift()
             cycle.push(index)
             return index
           }
         }
         refill()
       }
-      return last
+      return recent.at(-1) ?? 0
     },
     seen(): number[] {
       return [...cycle]
